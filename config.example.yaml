@@ -1,0 +1,69 @@
+# Agent Cluster Configuration
+# Copy this file to config.yaml and customize
+
+# ============================================================
+# Worker Agent Configuration
+# Each worker loads its own config.yaml for AI/API keys.
+# The orchestrator uses a SEPARATE config (orchestration/config.yaml).
+# ============================================================
+
+# Handler-specific configuration
+handlers:
+  # AI handler — OpenAI-compatible API (NVIDIA, OpenAI, etc.)
+  ai:
+    api_key: "YOUR_API_KEY_HERE"           # e.g. nvapi-xxxxx
+    base_url: "https://integrate.api.nvidia.com/v1"  # or https://api.openai.com/v1
+    model: "z-ai/glm5"                     # or gpt-4, etc.
+
+  # Research handler — Brave Search API
+  research:
+    brave_api_key: "YOUR_BRAVE_API_KEY_HERE"
+
+# ============================================================
+# Coordinator Settings (used by coordinator server)
+# ============================================================
+coordinator:
+  host: "0.0.0.0"
+  port: 8080
+  shared_dir: "/tmp/agent_cluster"
+  max_agents: 100
+  task_queue_size: 1000
+  heartbeat_timeout: 90
+
+# ============================================================
+# Security Settings
+# ============================================================
+security:
+  auth_enabled: false
+  jwt_secret: "CHANGE-THIS-IN-PRODUCTION"
+  api_key_prefix: "ac_"
+  session_timeout: 3600
+
+# ============================================================
+# Auto-Discovery
+# ============================================================
+# If handlers.ai.api_key is not set, workers will attempt to
+# auto-discover credentials from ~/.openclaw/openclaw.json
+# under the provider matching the base_url domain.
+#
+# For NVIDIA: looks for provider "custom-integrate-api-nvidia-com"
+# Brave key: looks for plugins.entries[].config.braveApiKey
+
+# ============================================================
+# OpenClaw Integration
+# ============================================================
+# When enabled, the cluster uses OpenClaw sessions for message
+# routing instead of standalone TCP. Agents can be OpenClaw
+# sessions OR standalone TCP agents — both work simultaneously.
+#
+# When disabled, the cluster runs purely standalone (TCP only).
+# ============================================================
+openclaw:
+  enabled: false                    # Master switch
+  coordinator_session: "session:agent-cluster-coordinator"
+  agent_session_prefix: "agent-cluster"  # Prefix for agent session keys
+  workspace_dir: "~/.openclaw/workspace"  # OpenClaw workspace for memory sync
+  auto_register_agents: true        # Auto-register new agents as OpenClaw sessions
+  sync_conversations: true          # Export conversations to OpenClaw memory
+  expose_skills: true               # Surface cluster capabilities as OpenClaw skills
+  event_bridge: true                # Translate cluster events ↔ OpenClaw events

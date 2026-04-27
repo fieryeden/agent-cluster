@@ -1,0 +1,55 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Temp / runtime
+/tmp/
+*.tmp
+*.bak
+
+# Shared directory (runtime)
+/shared/
+
+# Database files (runtime)
+*.db
+*.db-wal
+*.db-shm
+
+# OTA packages (runtime)
+/ota_packages/
+
+# Logs
+*.log
+logs/

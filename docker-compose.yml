@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # Coordinator Service
+  # ==========================================
+  coordinator:
+    build: .
+    image: agent-cluster:latest
+    container_name: agent-cluster-coordinator
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - cluster-data:/tmp/agent_cluster
+      - cluster-logs:/var/log/agent-cluster
+    environment:
+      - AGENT_CLUSTER_CONFIG=/app/config.yaml
+      - AGENT_CLUSTER_LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "python", "-c", "from agent_cluster import HealthChecker; h=HealthChecker(); print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - agent-cluster-net
+
+  # ==========================================
+  # Agent Service (example)
+  # ==========================================
+  agent:
+    build: .
+    image: agent-cluster:latest
+    container_name: agent-cluster-agent-1
+    restart: unless-stopped
+    depends_on:
+      coordinator:
+        condition: service_healthy
+    environment:
+      - COORDINATOR_URL=http://coordinator:8080
+    command: ["agent", "--coordinator", "http://coordinator:8080"]
+    networks:
+      - agent-cluster-net
+    deploy:
+      # Scale agents as needed
+      replicas: 1
+
+  # ==========================================
+  # Dashboard (optional, separate)
+  # ==========================================
+  dashboard:
+    build: .
+    image: agent-cluster:latest
+    container_name: agent-cluster-dashboard
+    restart: unless-stopped
+    depends_on:
+      - coordinator
+    ports:
+      - "3001:3000"
+    environment:
+      - COORDINATOR_URL=http://coordinator:8080
+    command: ["dashboard", "--coordinator", "http://coordinator:8080"]
+    networks:
+      - agent-cluster-net
+
+networks:
+  agent-cluster-net:
+    driver: bridge
+
+volumes:
+  cluster-data:
+  cluster-logs:
