@@ -26,6 +26,7 @@ setup(
     entry_points={
         'console_scripts': [
             'agent-cluster=agent_cluster.__main__:main',
+            'agent-dashboard=dashboard.cli:main',
         ],
     },
     classifiers=[
