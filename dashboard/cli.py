@@ -22,22 +22,32 @@ from dashboard.api import DashboardAPI
 
 
 def cmd_serve(args):
-    """Start the dashboard API server with live cluster data."""
+    """Start the dashboard with live cluster data.
+
+    Reads agent state from the cluster shared directory, which the
+    network coordinator writes to as agents connect/disconnect.
+    Run the coordinator separately: python -m network.coordinator
+    """
     from orchestration.cluster import ClusterOrchestrator, BotConfig, BotType
+    import json
 
-    orch = ClusterOrchestrator(config_dir=args.shared_dir or "/tmp/agent_cluster")
+    cluster_dir = args.shared_dir or "/tmp/agent_cluster"
+    orch = ClusterOrchestrator(config_dir=cluster_dir)
 
-    config_file = Path(orch.config_dir) / "config.json"
-    if config_file.exists():
-        import json
-        with open(config_file) as f:
-            config = json.load(f)
-        for agent_id, agent_config in config.get('agents', {}).items():
-            orch.register_agent(BotConfig(
-                bot_type=BotType(agent_config.get('type', 'nanobot')),
-                agent_id=agent_id,
-                capabilities=agent_config.get('capabilities', []),
-            ))
+    # Load any existing agent state from the shared directory
+    agents_dir = Path(cluster_dir) / "agents"
+    if agents_dir.exists():
+        for agent_file in agents_dir.glob("*.json"):
+            try:
+                with open(agent_file) as f:
+                    agent_data = json.load(f)
+                orch.register_agent(BotConfig(
+                    bot_type=BotType(agent_data.get('type', 'nanobot')),
+                    agent_id=agent_data.get('agent_id', agent_file.stem),
+                    capabilities=agent_data.get('capabilities', []),
+                ))
+            except Exception:
+                pass
 
     config = DashboardConfig(
         metrics_interval=args.interval,
@@ -48,14 +58,47 @@ def cmd_serve(args):
         registry=orch.capability_registry,
         config=config,
     )
+
+    # Background: watch for new agent registrations in the shared dir
+    import threading, time as _time
+
+    def _watch_agents():
+        seen = set(orch.bot_configs.keys())
+        while dashboard._running:
+            try:
+                if agents_dir.exists():
+                    for agent_file in agents_dir.glob("*.json"):
+                        aid = agent_file.stem
+                        if aid not in seen:
+                            try:
+                                with open(agent_file) as f:
+                                    ad = json.load(f)
+                                orch.register_agent(BotConfig(
+                                    bot_type=BotType(ad.get('type', 'nanobot')),
+                                    agent_id=ad.get('agent_id', aid),
+                                    capabilities=ad.get('capabilities', []),
+                                ))
+                                seen.add(aid)
+                            except Exception:
+                                pass
+            except Exception:
+                pass
+            _time.sleep(2)
+
+    watcher = threading.Thread(target=_watch_agents, daemon=True)
     dashboard.start()
+    watcher.start()
 
     api = DashboardAPI(dashboard, port=args.port)
+    n_agents = len(orch.bot_configs)
     print(f"\n{'='*60}")
-    print(f"  Agent Cluster Dashboard")
+    print(f"  Agent Cluster Dashboard (LIVE)")
     print(f"{'='*60}")
-    print(f"\n  Dashboard: http://localhost:{args.port}/")
-    print(f"  API:       http://localhost:{args.port}/api/overview")
+    print(f"\n  Dashboard:   http://localhost:{args.port}/")
+    print(f"  API:         http://localhost:{args.port}/api/overview")
+    print(f"  Cluster dir: {cluster_dir}")
+    print(f"  Agents seen: {n_agents}")
+    print(f"\n  Coordinator: python -m network.coordinator --port {args.coordinator_port}")
     print(f"\n  Press Ctrl+C to stop")
     print(f"{'='*60}\n")
 
@@ -240,6 +283,7 @@ Examples:
     serve_parser.add_argument('--shared-dir', help='Cluster shared directory')
     serve_parser.add_argument('--interval', type=float, default=5.0, help='Update interval (seconds)')
     serve_parser.add_argument('--heartbeat-timeout', type=int, default=90, help='Heartbeat timeout (seconds)')
+    serve_parser.add_argument('--coordinator-port', type=int, default=7890, help='Coordinator TCP port for agent connections')
 
     # status command
     status_parser = subparsers.add_parser('status', help='Show cluster status')
