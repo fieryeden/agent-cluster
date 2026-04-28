@@ -58,7 +58,7 @@ class DeploymentConfig:
     
     # Agents
     max_agents: int = 100
-    heartbeat_interval: float = 30.0
+    heartbeat_interval: float = 300.0
     agent_timeout: float = 300.0
     
     # Tasks

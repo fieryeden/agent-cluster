@@ -1180,7 +1180,7 @@ class WorkerAgent:
                 self.send_heartbeat()
             except Exception as e:
                 print(f"[WARN] Heartbeat failed: {e}")
-            time.sleep(10)
+            time.sleep(300)
 
     def run(self):
         """Main worker loop — register, poll, claim, execute, report."""
