@@ -107,6 +107,14 @@ class DashboardAPIHandler(BaseHTTPRequestHandler):
             '/api/export/html': lambda: self.dashboard.export_html(),
         }
 
+        # Root path serves the HTML dashboard
+        if path == '/' or path == '':
+            try:
+                self._send_html(self.dashboard.export_html())
+            except Exception as e:
+                self._send_json({'error': str(e)}, 500)
+            return
+
         # Check exact match
         if path in routes:
             try:
