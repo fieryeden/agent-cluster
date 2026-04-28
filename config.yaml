@@ -1,0 +1,40 @@
+# Worker Agent Configuration
+# This config is for WORKERS ONLY — the orchestration layer has its own config.
+
+coordinator:
+  host: "0.0.0.0"
+  port: 8080
+  shared_dir: "/tmp/agent_cluster"
+  max_agents: 100
+  task_queue_size: 1000
+  heartbeat_timeout: 90
+
+# Handler Settings
+handlers:
+  enable_all: true
+
+  # AI handler — NVIDIA endpoint with GLM5
+  ai:
+    api_key: "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"
+    base_url: "https://integrate.api.nvidia.com/v1"
+    model: "z-ai/glm5"
+
+  # Research handler — Brave Search (auto-discovered from OpenClaw config)
+  research:
+    brave_api_key: "BSAJUoR4URPmdR-ntvqrNydYoatd7zW"
+
+  # Handler timeouts
+  timeouts:
+    web_fetch: 30
+    file_read: 10
+    llm_chat: 120
+
+# Agent defaults
+agent_defaults:
+  capabilities:
+    - echo
+    - shell
+    - compute
+  resources:
+    max_memory_mb: 512
+    max_cpu_percent: 80

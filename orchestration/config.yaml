@@ -1,0 +1,14 @@
+# Orchestration Layer Configuration
+# This config is for the orchestrator/decomposer ONLY — workers have their own config.
+
+orchestrator:
+  coordinator_url: "http://localhost:8080"
+  poll_interval: 3.0
+  timeout: 300.0
+
+# AI for task decomposition and dispatch decisions
+# This is SEPARATE from worker AI — workers use their own config.yaml
+ai:
+  api_key: "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"
+  base_url: "https://integrate.api.nvidia.com/v1"
+  model: "z-ai/glm5"

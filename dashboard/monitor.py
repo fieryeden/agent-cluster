@@ -711,7 +711,8 @@ class ClusterDashboard:
     
     def get_capability_gaps(self) -> List[Dict[str, Any]]:
         """Get capability gaps."""
-        return self.collector.get_top_capability_gaps(self.config.max_capability_gaps)
+        gaps = self.collector.get_top_capability_gaps(self.config.max_capability_gaps)
+        return [g.to_dict() if hasattr(g, 'to_dict') else g for g in gaps]
     
     def get_capabilities(self) -> Dict[str, Any]:
         """Get capability registry overview."""

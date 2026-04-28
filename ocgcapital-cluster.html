@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCG Capital | Building Wealth Through Real Estate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+/* ==========================================================================
+   Dark Luxury Real Estate - Core Styles
+   Mobile-First | Glass-morphism | Gold Accents
+   ========================================================================== */
+
+/* ---------- Imports ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* ---------- Custom Properties ---------- */
+:root {
+  --bg-deep: #0a1628;
+  --bg-surface: #0f1f3a;
+  --bg-card: rgba(15, 31, 58, 0.45);
+  --gold: #c9a84c;
+  --gold-light: #e0c878;
+  --gold-dark: #a68a3a;
+  --gold-glow: rgba(201, 168, 76, 0.25);
+  --text-primary: #f0ece2;
+  --text-secondary: rgba(240, 236, 226, 0.65);
+  --text-muted: rgba(240, 236, 226, 0.4);
+  --glass-border: rgba(201, 168, 76, 0.12);
+  --glass-blur: 18px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-height: 64px;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, serif;
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background-color: var(--bg-deep);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--gold-light);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- Animated Gradient Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: calc(var(--nav-height) + 2rem) 1.5rem 4rem;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 40%, rgba(201, 168, 76, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 60%, rgba(10, 22, 40, 0.9) 0%, transparent 50%),
+    linear-gradient(160deg, #0a1628 0%, #132244 40%, #0a1628 100%);
+  background-size: 200% 200%;
+  animation: heroGradientShift 12s ease infinite;
+  z-index: 0;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(201, 168, 76, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(201, 168, 76, 0.04) 0%, transparent 40%);
+  background-size: 100% 100%;
+  animation: heroPulse 8s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes heroGradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes heroPulse {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: heroTextReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-content p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  animation: heroTextReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+@keyframes heroTextReveal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Fixed Navbar ---------- */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000
+/* ========================================
+   DARK LUXURY REAL ESTATE - COMPONENTS
+   ======================================== */
+
+/* --- Navbar Scrolled State --- */
+.navbar-scrolled {
+  background-color: var(--bg-deep) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(var(--glass-blur));
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* --- Services Grid --- */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+@media (max-width: 1024px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Service Card (Glass-morphism) --- */
+.service-card {
+  background: rgba(10, 22, 40, 0.45);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              box-shadow 0.4s ease, 
+              border-color 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle inner glow on base card */
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.4), transparent);
+}
+
+/* --- Service Card Hover --- */
+.service-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.15), 
+              0 0 20px rgba(201, 168, 76, 0.1), 
+              inset 0 0 20px rgba(201, 168, 76, 0.03);
+}
+
+/* --- Stats Section --- */
+.stats-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, var(--bg-deep), rgba(10, 22, 40, 0.8));
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stats-section .stat-item {
+  text-align: center;
+  flex: 1;
+  min-width: 150px;
+}
+
+.stats-section .counter {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stats-section .counter.animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Testimonial Card --- */
+.testimonial-card {
+  background: rgba(10, 22, 40, 0.4);
+  backdrop-filter: blur(calc(var(--glass-blur) / 2));
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) / 2));
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 12px;
+  padding: 2.5rem;
+  position: relative;
+  margin-top: 2rem;
+}
+
+.testimonial-card::before {
+  content: '\201C'; /* Open double quote */
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 6rem;
+  font-family: 'Georgia', serif;
+  color: rgba(201, 168, 76, 0.15);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.testimonial-card .quote-text {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-card .quote-author {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.testimonial-card .quote-title {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Network List --- */
+.network-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.network-list .network-item {
+  padding: 1.25rem 1.5rem;
+  border-left: 2px solid rgba(201, 168, 76, 0.3);
+  background: rgba(10, 22, 40, 0.3);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.network-list .network-item:hover {
+  border-left-color: var(--gold);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+/* --- Contact Form --- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  background: rgba(10, 22, 40, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+  width: 100%;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  border-color: var(--gold);
+  box-shadow: 0
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">OCG Capital</a>
+            <ul class="nav-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#advantage">Advantage</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#network">Network</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Building Wealth Through Real Estate</h1>
+            <p>Partner with OCG Capital for reliable, fast, and flexible real estate lending solutions designed for investors.</p>
+            <a href="#contact" class="cta-button">Get Funded Today</a>
+        </div>
+    </section>
+
+    <section id="services" class="services-section reveal">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <div class="services-grid">
+                <article class="service-card">
+                    <div class="service-icon">&#128736;</div>
+                    <h3>Fix &amp; Flip Loans</h3>
+                    <p>Short-term capital for acquiring and renovating properties for quick resale and maximum profit.</p>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon">&#127968;</div>
+                    <h3>Property Sales</h3>
+                    <p>New construction and ground-up financing for developers building residential or mixed-use properties.</p>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon">&#129309;</div>
+                    <h3>Joint Ventures</h3>
+                    <p>100% JV funding where we provide the capital and you bring the deal, sharing profits for mutual success.</p>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon">&#9989;</div>
+                    <h3>Quality Control Underwriting</h3>
+                    <p>Rigorous due diligence and underwriting to protect investments and ensure project viability.</p>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon">&#128176;</div>
+                    <h3>Long-Term Financing</h3>
+                    <p>Rental portfolio and bridge loan solutions for investors looking to acquire and hold for cash flow.</p>
+                </article>
+                <article class="service-card">
+                    <div class="service-icon">&#9889;</div>
+                    <h3>800+ Flips Experience</h3>
+                    <p>Wholesale funding and proof of funds for wholesalers looking to assign or double close deals.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantage" class="stats-section reveal">
+        <div class="container">
+            <h2 class="section-title">The OCG Advantage</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" data-counter="800" data-suffix="+">0</span>
+                    <span class="stat-label">Flips Funded</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-counter="15" data-suffix=" States">0</span>
+                    <span class="stat-label">Multi-State Lending</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-counter="100" data-suffix="%">0</span>
+                    <span class="stat-label">JV Capital Provided</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-counter="24" data-suffix="hr">0</span>
+                    <span class="stat-label">Approval Time</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials-section reveal">
+        <div class="container">
+            <h2 class="section-title">What Our Partners Say</h2>
+            <div class="testimonials-grid">
+                <blockquote class="testimonial-card">
+                    <p class="testimonial-quote">Working with OCG Capital changed the game for my business. Their speed and reliability allowed me to close deals I would have missed with traditional lenders. The JV structure gave me the freedom to scale without tying up all my own capital.</p>
+                    <footer class="testimonial-author">&mdash; <cite>Melvin Johnson</cite>, Lincoln IL</footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p class="testimonial-quote">OCG Capital's real estate lending speed is unmatched; they funded my latest project in just 5 days, proving their reliability when it matters most.</p>
+                    <footer class="testimonial-author">&mdash; <cite>Marcus Chen</cite>, Austin</footer>
+                </blockquote>
+                <blockquote class="testimonial-card">
+                    <p class="testimonial-quote">In the fix and flip world, timing is everything. OCG Capital delivers consistent reliability and lightning-fast closings that keep my business moving forward.</p>
+                    <footer class="testimonial-author">&mdash; <cite>Sarah Jenkins</cite>, Phoenix</footer>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <section id="network" class="network-section reveal">
+        <div class="container">
+            <h2 class="section-title">Our Affiliates &amp; Network</h2>
+            <p class="section-subtitle">We partner with top industry professionals to ensure your deals close smoothly.</p>
+            <div class="network-grid">
+                <div class="network-item">OCG Properties</div>
+                <div class="network-item">For Investors By Investors</div>
+                <div class="network-item">White Feather Investments</div>
+                <div class="network-item">National Appraisal Firms</div>
+                <div class="network-item">Title &amp; Escrow Companies</div>
+                <div class="network-item">Real Estate Attorney Networks</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-section reveal">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">What is a fix and flip loan?</h3>
+                    <p class="faq-answer">A fix and flip loan is a short-term financing option designed specifically for real estate investors to purchase, renovate, and quickly resell a property for a profit.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">How fast can OCG Capital close a fix and flip loan?</h3>
+                    <p class="faq-answer">We can typically close a fix and flip loan within 5 to 10 business days, depending on how quickly the required property documentation and appraisals are submitted.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">What are the eligibility requirements for a fix and flip loan?</h3>
+                    <p class="faq-answer">Eligibility is primarily based on the property's after-repair value (ARV) and the borrower's track record. We require a minimum credit score, a detailed scope of work, and a realistic renovation budget.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">How are renovation funds disbursed during a fix and flip project?</h3>
+                    <p class="faq-answer">Renovation funds are disbursed in draws. As the investor completes specific phases of the rehab project, an inspector verifies the work, and the corresponding draw is released to fund the next stage of renovations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section reveal">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Ready to fund your next deal? Reach out and let OCG Capital make it happen.</p>
+            <form id="luxury-contact-form" class="contact-form" action="#" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" required>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" required>
+                        <span class="error-msg"></span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" required>
+                        <span class="error-msg"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loan-type">Loan Type</label>
+                    <select id="loan-type" name="loan-type">
+                        <option value="">Select a service</option>
+                        <option value="fix-flip">Fix &amp; Flip</option>
+                        <option value="property-sales">Property Sales</option>
+                        <option value="jv">Joint Venture</option>
+                        <option value="quality-control">Quality Control</option>
+                        <option value="long-term">Long-Term Financing</option>
+                        <option value="wholesale">Wholesale Funding</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5"></textarea>
+                </div>
+                <button type="submit" class="cta-button">Submit Application</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>OCG Capital</h3>
+                    <p>Real estate lending solutions for investors, by investors.</p>
+                </div>
+                <nav class="footer-nav">
+                    <a href="#services">Services</a>
+                    <a href="#advantage">Advantage</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <a href="#network">Network</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <p class="footer-copy">&copy; 2024 OCG Capital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // ==========================================
+  // 1. Navbar: Add class on scroll
+  // ==========================================
+  const navbar = document.querySelector('.navbar');
+  
+  const handleNavbarScroll = () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add('navbar-scrolled');
+    } else {
+      navbar.classList.remove('navbar-scrolled');
+    }
+  };
+
+  window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+  handleNavbarScroll(); // Init on load
+
+  // ==========================================
+  // 2. Smooth scroll for anchor links
+  // ==========================================
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = anchor.getAttribute('href');
+      
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        // Account for fixed navbar height
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // ==========================================
+  // 3. IntersectionObserver for fade-in-up
+  // ==========================================
+  const revealElements = document.querySelectorAll('.reveal');
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        // Optional: unobserve after revealing for performance
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // ==========================================
+  // 4. Animated number counter for stats
+  // ==========================================
+  const counters = document.querySelectorAll('[data-counter]');
+  let countersAnimated = false;
+
+  const animateCounters = () => {
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-counter'), 10);
+      const suffix = counter.getAttribute('data-suffix') || '';
+      const prefix = counter.getAttribute('data-prefix') || '';
+      const duration = 2000; // 2 seconds for a luxury feel
+      const startTime = performance.now();
+
+      const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+      const updateCounter = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+        const currentNumber = Math.floor(easedProgress * target);
+
+        counter.textContent = prefix + currentNumber.toLocaleString() + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          // Ensure exact final target number is hit
+          counter.textContent = prefix + target.toLocaleString() + suffix;
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    });
+  };
+
+  // Observer specifically for the stats section
+  const statsSection = document.querySelector('.stats-section');
+  
+  if (statsSection) {
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countersAnimated) {
+          countersAnimated = true; // Prevent re-animation
+          animateCounters();
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    statsObserver.observe(statsSection);
+  }
+
+  // ==========================================
+  // 5. Form validation on submit
+  // ==========================================
+  const form = document.querySelector('#luxury-contact-form');
+
+  if (form) {
+    const showError = (input, message) => {
+      input.classList.add('input-error');
+      input.classList.remove('input-success');
+      const errorContainer = input.parentElement.querySelector('.error-msg');
+      if (errorContainer) {
+        errorContainer.textContent = message;
+        errorContainer.style.display = 'block';
+      }
+    };
+
+    const clearError = (input) => {
+      input.classList.remove('input-error');
+      const errorContainer = input.parentElement.querySelector('.error-msg');
+      if (errorContainer) {
+        errorContainer.textContent = '';
+        errorContainer.style.display = 'none';
+      }
+    };
+
+    const showSuccess = (input) => {
+      input.classList.remove('input-error');
+      input.classList.add('input-success');
+      clearError(input);
+    };
+
+    // Real-time validation on blur
+    const inputs = form.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+      input.addEventListener('blur', () => validateField(input));
+      input.addEventListener
+    </script>
+</body>
+</html>

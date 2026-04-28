@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCG Capital | Real Estate Lending & Investment</title>
+    <meta name="description" content="OCG Capital helps investors build wealth through real estate. Fix & flip lending, joint ventures, property sales, and long-term financing across multiple states.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f1f3a;
+            --bg-tertiary: #142744;
+            --accent-gold: #c9a84c;
+            --accent-gold-light: #d4b96a;
+            --accent-gold-dark: #a88a3a;
+            --text-white: #ffffff;
+            --text-secondary: #94a3b8;
+            --glass-bg: rgba(15, 31, 58, 0.6);
+            --glass-border: rgba(201, 168, 76, 0.15);
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.25s ease;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-white);
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition-fast); }
+        ul { list-style: none; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 1.25rem 0; transition: var(--transition-smooth);
+            background: transparent; border-bottom: 1px solid transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+            padding: 0.75rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        .navbar .container {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .navbar-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; font-weight: 700; color: var(--text-white);
+            letter-spacing: 0.5px;
+        }
+        .navbar-logo span { color: var(--accent-gold); }
+        .navbar-menu {
+            display: none; flex-direction: column; align-items: center; gap: 1.5rem;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: rgba(10, 22, 40, 0.98); padding: 2rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .navbar-menu.active { display: flex; }
+        .navbar-link {
+            font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 1.5px;
+            position: relative; padding: 0.25rem 0;
+        }
+        .navbar-link::after {
+            content: ''; position: absolute; bottom: -2px; left: 0;
+            width: 0; height: 2px; background: var(--accent-gold);
+            transition: var(--transition-smooth);
+        }
+        .navbar-link:hover { color: var(--text-white); }
+        .navbar-link:hover::after { width: 100%; }
+        .navbar-cta {
+            display: none; background: var(--accent-gold); color: var(--bg-primary);
+            padding: 0.625rem 1.5rem; font-size: 0.875rem; font-weight: 600;
+            border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;
+            transition: var(--transition-fast);
+        }
+        .navbar-cta:hover {
+            background: var(--accent-gold-light); transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+        .navbar-toggle {
+            display: flex; flex-direction: column; gap: 5px;
+            cursor: pointer; background: none; border: none; padding: 5px;
+        }
+        .navbar-toggle span {
+            display: block; width: 24px; height: 2px;
+            background: var(--text-white); transition: var(--transition-fast);
+        }
+        .navbar-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .navbar-toggle.active span:nth-child(2) { opacity: 0; }
+        .navbar-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        @media (min-width: 768px) {
+            .navbar-menu {
+                display: flex; flex-direction: row; position: static;
+                width: auto; background: transparent; padding: 0; border-bottom: none;
+            }
+            .navbar-toggle { display: none; }
+            .navbar-cta { display: inline-block; }
+        }
+
+        /* ── Hero ── */
+        .hero {
+            position: relative; width: 100%; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; background: var(--bg-primary);
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.92) 0%, rgba(10, 22, 40, 0.75) 50%, rgba(201, 168, 76, 0.15) 100%);
+        }
+        .hero-overlay::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+            animation: pulse 6s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .hero-content {
+            position: relative; z-index: 2; text-align: center;
+            max-width: 900px; padding: 6rem 1.5rem 2rem;
+        }
+        .hero-tagline {
+            display: inline-block; font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 4px; color: var(--accent-gold);
+            margin-bottom: 1.5rem; padding: 0.5rem 1.25rem;
+            border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 30px;
+            background: rgba(201, 168, 76, 0.05);
+        }
+        .hero-title {
+            font-size: 2.5rem; font-weight: 700; line-height: 1.1;
+            margin-bottom: 1.5rem; color: var(--text-white);
+        }
+        .hero-title .gold { color: var(--accent-gold); }
+        .hero-subtitle {
+            font-size: 1rem; color: var(--text-secondary); line-height: 1.8;
+            max-width: 650px; margin: 0 auto 2.5rem; font-weight: 300;
+        }
+        .hero-buttons { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+        .btn-primary {
+            display: inline-block; background: var(--accent-gold); color: var(--bg-primary);
+            padding: 0.875rem 2.5rem; font-family: 'Inter', sans-serif;
+            font-size: 0.875rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.5px; border-radius: 4px; border: none; cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .btn-primary:hover {
+            background: var(--accent-gold-light); transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
+        }
+        .btn-secondary {
+            display: inline-block; background: transparent; color: var(--text-white);
+            padding: 0.875rem 2.5rem; font-family: 'Inter', sans-serif;
+            font-size: 0.875rem; font-weight: 500; text-transform: uppercase;
+            letter-spacing: 1.5px; border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .btn-secondary:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+        .hero-stats {
+            display: grid; grid-template-columns: 1fr; gap: 1.5rem;
+            margin-top: 4rem; padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat-number {
+            font-family: 'Playfair Display', serif; font-size: 2.25rem;
+            font-weight: 700; color: var(--accent-gold); margin-bottom: 0.25rem;
+        }
+        .hero-stat-label {
+            font-size: 0.75rem; color: var(--text-secondary);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-title { font-size: 3.5rem; }
+            .hero-subtitle { font-size: 1.125rem; }
+            .hero-buttons { flex-direction: row; justify-content: center; }
+            .hero-stats { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 4.25rem; }
+            .hero-stat-number { font-size: 2.75rem; }
+        }
+
+        /* ── Sections ── */
+        .section { padding: 5rem 0; position: relative; }
+        .section-header { text-align: center; max-width: 700px; margin: 0 auto 3.5rem; }
+        .section-tagline {
+            display: inline-block; font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 4px; color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+        .section-title { font-size: 2rem; margin-bottom: 1rem; }
+        .section-subtitle {
+            font-size: 1rem; color: var(--text-secondary); font-weight: 300; line-height: 1.8;
+        }
+        @media (min-width: 768px) {
+            .section { padding: 6rem 0; }
+            .section-title { font-size: 2.75rem; }
+        }
+        @media (min-width: 1024px) {
+            .section { padding: 7rem 0; }
+            .section-title { font-size: 3.25rem; }
+        }
+
+        /* ── Services ── */
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .service-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            padding: 2.5rem 2rem; transition: var(--transition-smooth);
+            position: relative; overflow: hidden;
+        }
+        .service-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.03) 0%, transparent 100%);
+            opacity: 0; transition: var(--transition-smooth);
+        }
+        .service-card:hover {
+            border-color: rgba(201, 168, 76, 0.5); transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(201, 168, 76, 0.05);
+        }
+        .service-card:hover::before { opacity: 1; }
+        .service-icon {
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
+            background: rgba(201, 168, 76, 0.08); border: 1px solid rgba(201, 168, 76, 0.15);
+            border-radius: 12px; margin-bottom: 1.75rem; font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+        .service-card:hover .service-icon {
+            background: rgba(201, 168, 76, 0.15); border-color: rgba(201, 168, 76, 0.3);
+            transform: scale(1.05);
+        }
+        .service-title { font-size: 1.25rem; margin-bottom: 0.75rem; }
+        .service-description { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; font-weight: 300; }
+        .service-link {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            margin-top: 1.5rem; font-size: 0.8rem; font-weight: 600;
+            color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1.5px;
+        }
+        .service-link:hover { gap: 0.75rem; color: var(--accent-gold-light); }
+
+        @media (min-width: 768px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        /* ── Testimonials ── */
+        .testimonials-section { background: var(--bg-secondary); }
+        .testimonial-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            padding: 2.5rem; text-align: center; max-width: 700px; margin: 0 auto;
+        }
+        .testimonial-quote {
+            font-family: 'Playfair Display', serif; font-size: 1.25rem;
+            font-style: italic; line-height: 1.8; margin-bottom: 1.5rem;
+            color: var(--text-white);
+        }
+        .testimonial-quote::before { content: '\201C'; color: var(--accent-gold); font-size: 2rem; margin-right: 0.25rem; }
+        .testimonial-quote::after { content: '\201D'; color: var(--accent-gold); font-size: 2rem; margin-left: 0.25rem; }
+        .testimonial-author { font-weight: 600; color: var(--accent-gold); font-size: 1rem; }
+        .testimonial-location { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
+        /* ── Network ── */
+        .network-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .network-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 12px;
+            padding: 2.5rem 2rem; transition: var(--transition-smooth); text-align: center;
+        }
+        .network-card:hover {
+            border-color: rgba(201, 168, 76, 0.5); transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        .network-card h3 { font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--accent-gold); }
+        .network-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; font-weight: 300; }
+        .network-card a { color: var(--accent-gold); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 1rem; display: inline-block; }
+        .network-card a:hover { color: var(--accent-gold-light); }
+        @media (min-width: 768px) { .network-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        /* ── Map ── */
+        .map-section { background: var(--bg-secondary); }
+        .map-container {
+            max-width: 800px; margin: 0 auto; padding: 2rem;
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 12px; text-align: center;
+        }
+        .map-container svg { width: 100%; height: auto; }
+        .map-state { fill: var(--bg-tertiary); stroke: rgba(201, 168, 76, 0.2); stroke-width: 1; transition: fill 0.3s; cursor: pointer; }
+        .map-state.active { fill: var(--accent-gold-dark); }
+        .map-state:hover { fill: var(--accent-gold); }
+
+        /* ── Contact ── */
+        .contact-form { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block; font-size: 0.8rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-secondary); margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.875rem 1rem; background: rgba(15, 31, 58, 0.8);
+            border: 1px solid rgba(201, 168, 76, 0.15); border-radius: 6px;
+            color: var(--text-white); font-family: 'Inter', sans-serif;
+            font-size: 0.95rem; transition: var(--transition-fast);
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .submit-btn {
+            width: 100%; background: var(--accent-gold); color: var(--bg-primary);
+            padding: 1rem; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;
+            border: none; border-radius: 6px; cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .submit-btn:hover {
+            background: var(--accent-gold-light); transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
+        }
+        .form-success {
+            display: none; text-align: center; padding: 2rem;
+            background: rgba(201, 168, 76, 0.1); border: 1px solid var(--accent-gold);
+            border-radius: 8px; margin-top: 1rem;
+        }
+        .form-success.show { display: block; }
+        .form-success h3 { color: var(--accent-gold); margin-bottom: 0.5rem; }
+        .form-success p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* ── Footer ── */
+        .footer {
+            background: var(--bg-primary); border-top: 1px solid rgba(201, 168, 76, 0.1);
+            padding: 3rem 0 2rem;
+        }
+        .footer-content {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1.5rem; text-align: center;
+        }
+        .footer-logo {
+            font-family: 'Playfair Display', serif; font-size: 1.25rem;
+            font-weight: 700; color: var(--text-white);
+        }
+        .footer-logo span { color: var(--accent-gold); }
+        .footer-links { display: flex; gap: 2rem; }
+        .footer-links a { font-size: 0.85rem; color: var(--text-secondary); }
+        .footer-links a:hover { color: var(--accent-gold); }
+        .footer-copy { font-size: 0.8rem; color: var(--text-secondary); }
+        @media (min-width: 768px) {
+            .footer-content { flex-direction: row; justify-content: space-between; text-align: left; }
+        }
+
+        /* ── Animations ── */
+        .animate-on-scroll {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#hero" class="navbar-logo">OCG <span>Capital</span></a>
+            <ul class="navbar-menu" id="navMenu">
+                <li><a href="#services" class="navbar-link">Services</a></li>
+                <li><a href="#about" class="navbar-link">Advantage</a></li>
+                <li><a href="#testimonials" class="navbar-link">Testimonials</a></li>
+                <li><a href="#network" class="navbar-link">Network</a></li>
+                <li><a href="#contact" class="navbar-link">Contact</a></li>
+            </ul>
+            <a href="#contact" class="navbar-cta">Apply Now</a>
+            <button class="navbar-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-tagline">Real Estate Investment Capital</div>
+            <h1 class="hero-title">Building Wealth Through <span class="gold">Real Estate</span></h1>
+            <p class="hero-subtitle">Trusted lending for 800+ successful property flips. Capital, expertise, and partnerships to help you succeed.</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn-primary">Get Started</a>
+                <a href="#services" class="btn-secondary">Our Services</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number" data-count="800">0+</div>
+                    <div class="hero-stat-label">Flips Completed</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">Multi-State</div>
+                    <div class="hero-stat-label">Lending Footprint</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">100%</div>
+                    <div class="hero-stat-label">JV Capital Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">What We Do</div>
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">From fix & flip lending to joint ventures, OCG Capital provides the capital and expertise real estate investors need.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">💰</div>
+                    <h3 class="service-title">Fix & Flip Lending</h3>
+                    <p class="service-description">Capital for property rehabilitation. We fund your flips so you can focus on execution and returns.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+                <div class="service-card animate-on-scroll delay-1">
+                    <div class="service-icon">🏠</div>
+                    <h3 class="service-title">Property Sales</h3>
+                    <p class="service-description">Need help selling? We re-sell properties to our large investor base through proprietary sales systems.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+                <div class="service-card animate-on-scroll delay-2">
+                    <div class="service-icon">🤝</div>
+                    <h3 class="service-title">Joint Ventures</h3>
+                    <p class="service-description">Great deal but short on capital? OCG joint ventures with qualified borrowers, supplying 100% of project funding in select markets.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">✅</div>
+                    <h3 class="service-title">Quality Control</h3>
+                    <p class="service-description">Extensive underwriting experience helps you understand risks and mitigate them before they become problems.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+                <div class="service-card animate-on-scroll delay-1">
+                    <div class="service-icon">📈</div>
+                    <h3 class="service-title">Long-Term Financing</h3>
+                    <p class="service-description">Hold strategy financing for investors looking to build rental portfolios and long-term wealth.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+                <div class="service-card animate-on-scroll delay-2">
+                    <div class="service-icon">⭐</div>
+                    <h3 class="service-title">Experienced Operators</h3>
+                    <p class="service-description">Over 800 flips completed. We bring massive resources and deep expertise to increase your success rate.</p>
+                    <span class="service-link">Learn More →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The OCG Advantage -->
+    <section id="about" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">Why OCG</div>
+                <h2 class="section-title">The OCG Advantage</h2>
+                <p class="section-subtitle">We don't just lend — we partner. Deep expertise, proven results, and a national footprint.</p>
+            </div>
+            <div class="services-grid" style="grid-template-columns: 1fr;">
+                <div class="service-card animate-on-scroll" style="display: grid; grid-template-columns: 1fr; gap: 2rem; text-align: center;">
+                    <div style="display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;">
+                        <div>
+                            <div class="hero-stat-number" style="font-size: 3rem;" data-count="800">0+</div>
+                            <div class="hero-stat-label">Flips Completed</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-number" style="font-size: 3rem;">15+</div>
+                            <div class="hero-stat-label">States Active</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-number" style="font-size: 3rem;">100%</div>
+                            <div class="hero-stat-label">JV Capital</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-number" style="font-size: 3rem;">24hr</div>
+                            <div class="hero-stat-label">Approval Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="section testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">Success Stories</div>
+                <h2 class="section-title">What Our Partners Say</h2>
+            </div>
+            <div class="testimonial-card animate-on-scroll">
+                <p class="testimonial-quote">Great, fast and reliable! Andrew and his team was extremely informative and helpful throughout the funding process. Highly recommend their services!</p>
+                <div class="testimonial-author">Melvin Johnson</div>
+                <div class="testimonial-location">Lincoln, IL</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Network -->
+    <section id="network" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">Our Partners</div>
+                <h2 class="section-title">Valued Affiliates</h2>
+                <p class="section-subtitle">A network of trusted organizations dedicated to real estate education and investment.</p>
+            </div>
+            <div class="network-grid">
+                <div class="network-card animate-on-scroll">
+                    <h3>OCG Properties, LLC</h3>
+                    <p>Creating financial freedom through real estate acquisition and property management.</p>
+                    <a href="https://www.ocgproperties.org" target="_blank">Visit →</a>
+                </div>
+                <div class="network-card animate-on-scroll delay-1">
+                    <h3>For Investors By Investors</h3>
+                    <p>Non-profit real estate and financial education. Networking and learning for serious investors.</p>
+                    <a href="https://forinvestorsbyinvestors.com/" target="_blank">Visit →</a>
+                </div>
+                <div class="network-card animate-on-scroll delay-2">
+                    <h3>White Feather Investments</h3>
+                    <p>Teaching military members how to invest in real estate and build long-term wealth.</p>
+                    <a href="https://whitefeatherinvestments.com/" target="_blank">Visit →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Multi-State Map -->
+    <section id="map-section" class="section map-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">National Reach</div>
+                <h2 class="section-title">Multi-State Lending</h2>
+                <p class="section-subtitle">OCG Capital operates across multiple states. Hover to explore our footprint.</p>
+            </div>
+            <div class="map-container animate-on-scroll">
+                <svg viewBox="0 0 959 593" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="US Map showing OCG Capital lending states">
+                    <!-- Simplified US map with active states highlighted -->
+                    <path class="map-state" d="M673 186l29 2 4-13 27-1 26 6 5 13 42 3 12 13-3 19 15 15 3 22-13 8-21-4-38 8-29 14 8 30-3 18 13 4 14 39 24 14 17 15 5 10-10 13-4 24-19 21 6 9-2 19-10 10-3-4-21-4-7 13-15 7-20-5-5-8-18 3-14-2-3-13-11-3-22-9-11-19 10-16-10-4 5-17-1-19 9-12-4-5-14-10-1-13-14-6-19-2-18 6-8 5-5 17 3 21-5 4-15-9-5 4-20-2z" />
+                    <path class="map-state active" d="M580 256l-7 5 4 22 13 6 6-12-1-15-15-6z" /><!-- Sample state highlight -->
+                    <path class="map-state" d="M95 98l30 2 12 8-5 18 10 8 25-3 14 12 6 22-12 14-3 32-18 10-12 30-22 5-10-8-5-22-8-12-18-5-12-20 2-14 10-15-2-3-25 5-5 22 5 12-2 12z" />
+                    <path class="map-state active" d="M520 220l-12 5 8 18 15 3 5-12-16-14z" />
+                    <path class="map-state" d="M440 180l30 10 5 25-20 15-25-5-10-20 20-25z" />
+                    <path class="map-state active" d="M610 230l-15 8 5 25 18 5 8-20-16-18z" />
+                    <path class="map-state" d="M350 150l25 12 8 28-15 18-28-8-12-22 22-28z" />
+                    <!-- Overlay text -->
+                    <text x="480" y="300" text-anchor="middle" fill="#c9a84c" font-family="Playfair Display, serif" font-size="28" font-weight="600">We Lend Here</text>
+                    <text x="480" y="330" text-anchor="middle" fill="#94a3b8" font-family="Inter, sans-serif" font-size="14">Multiple states across the US</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tagline">Get In Touch</div>
+                <h2 class="section-title">Start Your Next Deal</h2>
+                <p class="section-subtitle">Ready to fund your next flip? Reach out and let's make it happen.</p>
+            </div>
+            <form class="contact-form animate-on-scroll" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Smith" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Tell Us About Your Deal</label>
+                    <textarea id="message" name="message" placeholder="Property type, location, estimated budget..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+                <h3>Thank You!</h3>
+                <p>We'll be in touch within 24 hours to discuss your deal.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">OCG <span>Capital</span></div>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Disclosures</a></li>
+                </ul>
+                <div class="footer-copy">&copy; 2026 OCG Capital. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Navbar scroll effect
+        var navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        var toggle = document.getElementById('navToggle');
+        var menu = document.getElementById('navMenu');
+        toggle.addEventListener('click', function() {
+            toggle.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Close mobile menu on link click
+        menu.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                toggle.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(a.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+            observer.observe(el);
+        });
+
+        // Counter animation
+        var counters = document.querySelectorAll('[data-count]');
+        var counterObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var el = entry.target;
+                    var target = parseInt(el.getAttribute('data-count'));
+                    var suffix = el.textContent.replace(/[0-9]/g, '');
+                    var current = 0;
+                    var increment = Math.ceil(target / 60);
+                    var timer = setInterval(function() {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        el.textContent = current + suffix;
+                    }, 30);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(function(c) { counterObserver.observe(c); });
+
+        // Contact form
+        var form = document.getElementById('contactForm');
+        var success = document.getElementById('formSuccess');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            form.style.display = 'none';
+            success.classList.add('show');
+        });
+
+        // Map state hover effects
+        document.querySelectorAll('.map-state').forEach(function(state) {
+            state.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.3)';
+            });
+            state.addEventListener('mouseleave', function() {
+                this.style.filter = '';
+            });
+        });
+    });
+    </script>
+</body>
+</html>
