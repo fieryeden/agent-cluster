@@ -22,33 +22,32 @@ from dashboard.api import DashboardAPI
 
 
 def cmd_serve(args):
-    """Start the dashboard with live cluster data.
+    """Start the coordinator + dashboard with live agent data.
 
-    Reads agent state from the cluster shared directory, which the
-    network coordinator writes to as agents connect/disconnect.
-    Run the coordinator separately: python -m network.coordinator
+    Runs the real Coordinator (HTTP API) that Eden3/Eden4 connect to,
+    plus the monitoring dashboard. Two HTTP servers:
+      - Coordinator API on coordinator_port (agent registration, heartbeats, tasks)
+      - Dashboard on dashboard_port (web UI + metrics API)
     """
-    from orchestration.cluster import ClusterOrchestrator, BotConfig, BotType
-    import json
+    from coordinator.server import Coordinator
+    import threading, time as _time, json, urllib.request
 
     cluster_dir = args.shared_dir or "/tmp/agent_cluster"
+
+    # Start the real coordinator that agents connect to
+    coord = Coordinator(shared_dir=cluster_dir)
+    coord_thread = threading.Thread(
+        target=coord.run, args=(args.coordinator_port,), daemon=True
+    )
+    coord_thread.start()
+    _time.sleep(1)  # Let coordinator HTTP server bind
+
+    # Build an orchestrator shim for the dashboard
+    from orchestration.cluster import ClusterOrchestrator
+    from dashboard.monitor import AgentMetrics
+    from datetime import datetime
+
     orch = ClusterOrchestrator(config_dir=cluster_dir)
-
-    # Load any existing agent state from the shared directory
-    agents_dir = Path(cluster_dir) / "agents"
-    if agents_dir.exists():
-        for agent_file in agents_dir.glob("*.json"):
-            try:
-                with open(agent_file) as f:
-                    agent_data = json.load(f)
-                orch.register_agent(BotConfig(
-                    bot_type=BotType(agent_data.get('type', 'nanobot')),
-                    agent_id=agent_data.get('agent_id', agent_file.stem),
-                    capabilities=agent_data.get('capabilities', []),
-                ))
-            except Exception:
-                pass
-
     config = DashboardConfig(
         metrics_interval=args.interval,
         heartbeat_timeout_seconds=args.heartbeat_timeout,
@@ -59,46 +58,46 @@ def cmd_serve(args):
         config=config,
     )
 
-    # Background: watch for new agent registrations in the shared dir
-    import threading, time as _time
-
-    def _watch_agents():
-        seen = set(orch.bot_configs.keys())
+    # Background: sync coordinator state -> dashboard every 2s
+    def _sync_loop():
         while dashboard._running:
             try:
-                if agents_dir.exists():
-                    for agent_file in agents_dir.glob("*.json"):
-                        aid = agent_file.stem
-                        if aid not in seen:
-                            try:
-                                with open(agent_file) as f:
-                                    ad = json.load(f)
-                                orch.register_agent(BotConfig(
-                                    bot_type=BotType(ad.get('type', 'nanobot')),
-                                    agent_id=ad.get('agent_id', aid),
-                                    capabilities=ad.get('capabilities', []),
-                                ))
-                                seen.add(aid)
-                            except Exception:
-                                pass
+                resp = urllib.request.urlopen(
+                    f'http://localhost:{args.coordinator_port}/status', timeout=3)
+                data = json.loads(resp.read())
+                for agent_data in data.get('agents', []):
+                    aid = agent_data['agent_id']
+                    caps = agent_data.get('capabilities', {})
+                    cap_names = list(caps.keys()) if isinstance(caps, dict) else []
+                    status = 'online' if agent_data.get('is_alive') else 'offline'
+                    if aid not in dashboard.agent_metrics:
+                        m = AgentMetrics(
+                            agent_id=aid, bot_type='agent', status=status,
+                            capabilities=cap_names)
+                        dashboard.agent_metrics[aid] = m
+                    else:
+                        dashboard.agent_metrics[aid].status = status
             except Exception:
                 pass
             _time.sleep(2)
 
-    watcher = threading.Thread(target=_watch_agents, daemon=True)
     dashboard.start()
-    watcher.start()
+    sync = threading.Thread(target=_sync_loop, daemon=True)
+    sync.start()
 
+    # Start dashboard API on a separate port
     api = DashboardAPI(dashboard, port=args.port)
-    n_agents = len(orch.bot_configs)
     print(f"\n{'='*60}")
-    print(f"  Agent Cluster Dashboard (LIVE)")
+    print(f"  Agent Cluster Coordinator + Dashboard (LIVE)")
     print(f"{'='*60}")
     print(f"\n  Dashboard:   http://localhost:{args.port}/")
-    print(f"  API:         http://localhost:{args.port}/api/overview")
-    print(f"  Cluster dir: {cluster_dir}")
-    print(f"  Agents seen: {n_agents}")
-    print(f"\n  Coordinator: python -m network.coordinator --port {args.coordinator_port}")
+    print(f"  Coordinator: http://localhost:{args.coordinator_port}/")
+    print(f"\n  Agent endpoints:")
+    print(f"    POST /register    - Register agent")
+    print(f"    POST /heartbeat   - Agent heartbeat")
+    print(f"    POST /assign      - Assign task")
+    print(f"    GET  /status      - Cluster status")
+    print(f"\n  Cluster dir: {cluster_dir}")
     print(f"\n  Press Ctrl+C to stop")
     print(f"{'='*60}\n")
 
@@ -107,6 +106,7 @@ def cmd_serve(args):
     except KeyboardInterrupt:
         print("\n\nShutting down...")
         dashboard.stop()
+        coord.stop()
         api.stop()
 
 
