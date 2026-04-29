@@ -180,7 +180,7 @@ register_ota_capability() {
     "status_query",
     "context_share"
   ],
-  "version": "0.12.0",
+  "version": "1.1.0",
   "installed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 }
 EOF
@@ -207,7 +207,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=${install_dir}
-ExecStart=${install_dir}/venv/bin/python -m agent_cluster
+ExecStart='/opt/agent-cluster'/venv/bin/python '/opt/agent-cluster'/deployment/capable_worker.py --coordinator http://${COORDINATOR_HOST}:${COORDINATOR_PORT} --agent-id ${AGENT_ID} --handler-dir /opt/agent-cluster/handlers --ota-gateway http://${COORDINATOR_HOST}:8082
 Restart=on-failure
 RestartSec=10
 Environment=AGENT_ID=${agent_name}
@@ -259,7 +259,7 @@ main() {
     echo ""
     echo "  Install dir:   $install_dir"
     echo "  Agent ID:      ${AGENT_ID:-$(hostname)}"
-    echo "  Version:       0.12.0"
+    echo "  Version:       1.1.0"
     echo "  OTA capable:   YES ✓"
     echo ""
     echo "  Start agent:   systemctl start agent-cluster"
